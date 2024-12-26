@@ -10,22 +10,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Create input JSON
-        id: create-json
-        uses: jsdaniell/create-json@1.1.2
-        with:
-          name: ${{ github.event.client_payload.filename }}
-          json: ${{ github.event.client_payload.tokens }}
-          dir: "input"
-
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
 
+      - name: Check Node.js Version
+        run: node --version
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Update Dependencies
         run: npm update
 
