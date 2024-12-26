@@ -14,7 +14,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '22.12.0'  # Atualizado para v22.12.0
+          node-version: "22.12.0"
 
       # Validate Node.js version
       - name: Check Node.js Version
@@ -23,6 +23,14 @@ jobs:
       # Install dependencies using npm ci
       - name: Install dependencies
         run: npm ci
+
+      # Ensure web-streams-polyfill is installed
+      - name: Install web-streams-polyfill
+        run: npm install web-streams-polyfill
+
+      # Ensure polyfill is loaded
+      - name: Ensure polyfill is loaded
+        run: node -e "require('web-streams-polyfill')"
 
       # Downgrade zip.js (if necessary)
       - name: Downgrade zip.js
