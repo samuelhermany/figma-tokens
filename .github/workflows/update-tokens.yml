@@ -37,4 +37,4 @@ jobs:
           body: "Desgin tokens have been updated via Figma and need do be reviewed."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: "master"
+          BRANCH_NAME: "main"
