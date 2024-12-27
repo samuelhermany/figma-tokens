@@ -18,6 +18,11 @@ jobs:
           json: ${{ github.event.client_payload.tokens }}
           dir: "input"
 
+      - name: Debug client payload
+        run: |
+          echo "Filename: ${{ github.event.client_payload.filename }}"
+          echo "Tokens: ${{ github.event.client_payload.tokens }}"
+
       - name: Validate tokens.json
         run: |
           if [ ! -s input/tokens.json ]; then
