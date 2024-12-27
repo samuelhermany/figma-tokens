@@ -21,7 +21,7 @@ jobs:
       - name: Debug client payload
         run: |
           echo "Filename: ${{ github.event.client_payload.filename }}"
-          echo "Tokens: ${{ github.event.client_payload.tokens }}"
+          printf "Tokens: %s\n" "${{ github.event.client_payload.tokens }}"
 
       - name: Validate tokens.json
         run: |
