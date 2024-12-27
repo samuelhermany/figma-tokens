@@ -16,7 +16,16 @@ jobs:
         with:
           name: ${{ github.event.client_payload.filename }}
           json: ${{ github.event.client_payload.tokens }}
-          dir: 'input'
+          dir: "input"
+
+      - name: Validate tokens.json
+        run: |
+          if [ ! -s input/tokens.json ]; then
+            echo "Error: tokens.json is empty or missing."
+            exit 1
+          fi
+          echo "tokens.json is valid and not empty. Content:"
+          cat input/tokens.json
 
       - name: Install Node.js
         uses: actions/setup-node@v3
@@ -25,11 +34,11 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Build
         run: npm run build
 
-      - name: Create PR 
+      - name: Create PR
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: "style: Update design tokens"
@@ -37,4 +46,4 @@ jobs:
           body: "Design tokens have been updated via Figma and need to be reviewed."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: 'main'
+          BRANCH_NAME: "main"
