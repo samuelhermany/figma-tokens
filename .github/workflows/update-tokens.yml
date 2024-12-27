@@ -32,6 +32,17 @@ jobs:
           echo "tokens.json is valid and not empty. Content:"
           cat input/tokens.json
 
+          - name: Commit tokens.json for debugging
+          run: |
+            git config --global user.email "you@example.com"
+            git config --global user.name "GitHub Actions"
+            git checkout -b debug-tokens
+            git add input/tokens.json
+            git commit -m "Debug: Add tokens.json for inspection"
+            git push origin debug-tokens
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
