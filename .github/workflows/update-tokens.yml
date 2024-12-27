@@ -21,7 +21,12 @@ jobs:
       - name: Debug client payload
         run: |
           echo "Filename: ${{ github.event.client_payload.filename }}"
-          printf "Tokens: %s\n" "${{ github.event.client_payload.tokens }}"
+
+          # Cria um arquivo temporário para armazenar os tokens e exibi-lo
+          echo "${{ github.event.client_payload.tokens }}" > debug_tokens.json
+
+          # Exibe o conteúdo do arquivo temporário
+          cat debug_tokens.json
 
       - name: Validate tokens.json
         run: |
