@@ -7,8 +7,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v3
 
@@ -18,54 +16,7 @@ jobs:
         with:
           name: ${{ github.event.client_payload.filename }}
           json: ${{ github.event.client_payload.tokens }}
-          dir: "input"
-
-      - name: Debug client payload
-        run: |
-          echo "Filename: ${{ github.event.client_payload.filename }}" > filename.txt  # Salva o nome do arquivo em filename.txt
-          cat filename.txt  # Exibe o conteúdo de filename.txt
-
-          # Salva o conteúdo dos tokens JSON em debug_tokens.json
-          echo '${{ github.event.client_payload.tokens }}' > debug_tokens.json
-          cat debug_tokens.json  # Exibe o conteúdo de debug_tokens.json
-
-      - name: Commit debug files for inspection
-        run: |
-          # Configura o Git
-          git config --global user.email "you@example.com"
-          git config --global user.name "GitHub Actions"
-
-          # Adiciona os arquivos ao Git
-          git add filename.txt debug_tokens.json
-
-          # Faz o commit
-          git commit -m "Debug: Add filename and tokens.json for inspection"
-
-          # Faz o push para um branch separado
-          git push origin HEAD:debug-tokens  # Envia para o branch 'debug-tokens'
-
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Validate tokens.json
-        run: |
-          if [ ! -s input/tokens.json ]; then
-            echo "Error: tokens.json is empty or missing."
-            exit 1
-          fi
-          echo "tokens.json is valid and not empty. Content:"
-          cat input/tokens.json
-
-          - name: Commit tokens.json for debugging
-          run: |
-            git config --global user.email "you@example.com"
-            git config --global user.name "GitHub Actions"
-            git checkout -b debug-tokens
-            git add input/tokens.json
-            git commit -m "Debug: Add tokens.json for inspection"
-            git push origin debug-tokens
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          dir: 'input'
 
       - name: Install Node.js
         uses: actions/setup-node@v3
@@ -75,10 +26,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Display design tokens
+        run: cat input/${{ github.event.client_payload.filename }}
+      
       - name: Build
         run: npm run build
 
-      - name: Create PR
+      - name: Create PR 
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: "style: Update design tokens"
@@ -86,4 +40,4 @@ jobs:
           body: "Design tokens have been updated via Figma and need to be reviewed."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: "main"
+          BRANCH_NAME: 'main'
