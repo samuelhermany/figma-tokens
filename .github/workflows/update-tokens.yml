@@ -10,13 +10,18 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      # Cria uma nova branch com base na branch principal (main)
+      - name: Create a new branch
+        run: |
+          git checkout -b "update-tokens-${{ github.sha }}"
+
       - name: Create input JSON
         id: create-json
         uses: jsdaniell/create-json@1.1.2
         with:
           name: ${{ github.event.client_payload.filename }}
           json: ${{ github.event.client_payload.tokens }}
-          dir: 'input'
+          dir: "input"
 
       - name: Install Node.js
         uses: actions/setup-node@v3
@@ -28,11 +33,11 @@ jobs:
 
       - name: Display design tokens
         run: cat input/${{ github.event.client_payload.filename }}
-      
+
       - name: Build
         run: npm run build
 
-      - name: Create PR 
+      - name: Create PR
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: "style: Update design tokens"
@@ -40,4 +45,4 @@ jobs:
           body: "Design tokens have been updated via Figma and need to be reviewed."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: 'main'
+          BRANCH_NAME: "main"
