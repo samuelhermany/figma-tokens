@@ -51,7 +51,7 @@ jobs:
         run: |
           git add .
           git commit -m "style: Update design tokens"
-          git push origin "update-tokens-${{ github.sha }}"
+          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/samuelhermany/figma-tokens.git "update-tokens-${{ github.sha }}"
 
       - name: Create PR
         uses: peter-evans/create-pull-request@v4
