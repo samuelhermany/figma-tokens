@@ -15,14 +15,20 @@ jobs:
         run: |
           git checkout -b "update-tokens-${{ github.sha }}"
 
+      # Cria o JSON com o nome correto: input/tokens.json
       - name: Create input JSON
         id: create-json
         uses: jsdaniell/create-json@1.1.2
         with:
-          name: ${{ github.event.client_payload.filename }}
+          name: tokens.json
           json: ${{ github.event.client_payload.tokens }}
           dir: "input"
 
+        # Exibe o conteúdo do arquivo JSON correto
+      - name: Display design tokens
+        run: cat input/tokens.json
+
+      # Outras etapas (como instalação do Node.js, dependências, build, etc)
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
@@ -31,11 +37,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Display design tokens
-        run: cat input/${{ github.event.client_payload.filename }}
-
       - name: Build
         run: npm run build
+
+      # Criação do commit e pull request
+      - name: Commit changes
+        run: |
+          git add .
+          git commit -m "style: Update design tokens"
+          git push origin "update-tokens-${{ github.sha }}
 
       - name: Create PR
         uses: peter-evans/create-pull-request@v4
