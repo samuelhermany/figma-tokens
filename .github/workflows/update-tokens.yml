@@ -24,7 +24,7 @@ jobs:
           json: ${{ github.event.client_payload.tokens }}
           dir: "input"
 
-        # Exibe o conteúdo do arquivo JSON correto
+      # Exibe o conteúdo do arquivo JSON correto
       - name: Display design tokens
         run: cat input/tokens.json
 
@@ -40,19 +40,13 @@ jobs:
       - name: Build
         run: npm run build
 
-      # Configura a identidade do Git
+      # Configura a identidade do Git (sem necessidade de push ou commit)
       - name: Configure Git user
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
 
-      # Criação do commit e push das alterações
-      - name: Commit changes
-        run: |
-          git add .
-          git commit -m "style: Update design tokens"
-          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/samuelhermany/figma-tokens.git "update-tokens-${{ github.sha }}"
-
+      # Criação da Pull Request (sem commit, apenas PR)
       - name: Create PR
         uses: peter-evans/create-pull-request@v4
         with:
