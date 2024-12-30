@@ -40,7 +40,13 @@ jobs:
       - name: Build
         run: npm run build
 
-      # Criação do commit e pull request
+      # Configura a identidade do Git
+      - name: Configure Git user
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+      # Criação do commit e push das alterações
       - name: Commit changes
         run: |
           git add .
