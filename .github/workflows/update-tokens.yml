@@ -1,8 +1,8 @@
 name: Generate design tokens
 
 permissions:
-  contents: write  # Permite escrever no conteúdo (fazer push)  
-  
+  contents: write  # Permite escrever no conteúdo (fazer push)
+
 on:
   repository_dispatch:
     types: update-tokens
@@ -18,11 +18,6 @@ jobs:
         run: |
           git checkout -b "update-tokens"
 
-      # Empurra a nova branch para o repositório remoto
-      - name: Push the new branch
-        run: |
-          git push origin "update-tokens"
-
       # Cria o JSON com o nome correto: input/tokens.json
       - name: Create input JSON
         id: create-json
@@ -35,6 +30,13 @@ jobs:
       # Exibe o conteúdo do arquivo JSON correto
       - name: Display design tokens
         run: cat input/tokens.json
+
+      # Comita o arquivo de tokens.json atualizado
+      - name: Commit updated tokens.json
+        run: |
+          git add input/tokens.json
+          git commit -m "update: Refresh design tokens"
+          git push origin "update-tokens"
 
       # Outras etapas (como instalação do Node.js, dependências, build, etc)
       - name: Install Node.js
@@ -58,3 +60,10 @@ jobs:
       - name: Fetch all branches
         run: |
           git fetch --all
+          
+      # Criação da Pull Request (sem commit, apenas PR)
+      - name: Create PR
+        uses: peter-evans/create-pull-request@v4
+        with:
+          commit-message: "style: Update design tokens"
+          title: ${{ github.event.client_payload.commitM
