@@ -3,10 +3,12 @@
  */
 
 module.exports = {
-  ColorWhite: "#ffffff",
-  ColorGray200: "#c1c1c4",
-  ColorGray500: "#50505c",
-  ColorGray800: "#1c1c1f",
-  ColorGray900: "#121214",
-  ColorPuple500: "#8b5cf6",
+  White: "#ffffff",
+  Gray200: "#c1c1c4",
+  Gray500: "#50505c",
+  Gray800: "#1c1c1f",
+  Gray900: "#121214",
+  Puple500: "#8b5cf6",
+  Red400: "#ff0707",
+  Red900: "#580b0b",
 };
