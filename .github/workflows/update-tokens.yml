@@ -16,7 +16,7 @@ jobs:
       # Cria uma nova branch com base na branch principal (main)
       - name: Create a new branch
         run: |
-          git checkout -b "update-tokens-${{ github.sha }}"
+          git checkout -b "update-tokens"
 
       # Empurra a nova branch para o repositório remoto
       - name: Push the new branch
