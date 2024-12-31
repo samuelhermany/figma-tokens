@@ -3,14 +3,14 @@
  */
 
 :root {
-  --2: 8rem;
-  --4: 16rem;
-  --8: 32rem;
-  --white: #ffffff;
-  --gray-200: #c1c1c4;
-  --gray-500: #50505c;
-  --gray-800: #1c1c1f;
-  --gray-900: #121214;
-  --puple-500: #8b5cf6;
-  --red-400: #ff0707;
+  --sizes-2: 8rem;
+  --sizes-4: 16rem;
+  --sizes-8: 32rem;
+  --color-white: #ffffff;
+  --color-gray-200: #c1c1c4;
+  --color-gray-500: #50505c;
+  --color-gray-800: #1c1c1f;
+  --color-gray-900: #121214;
+  --color-puple-500: #8b5cf6;
+  --color-red-400: #ff0707;
 }
