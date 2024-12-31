@@ -13,9 +13,7 @@ jobs:
     steps:
       # Faz checkout do repositório diretamente para a branch update-tokens
       - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0 # Garante que todas as branches e histórico sejam baixados
+        uses: actions/checkout@v3        
 
       # Verifica e cria a branch 'update-tokens' se não existir
       - name: Ensure branch exists
