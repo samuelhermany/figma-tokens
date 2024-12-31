@@ -10,5 +10,4 @@ module.exports = {
   Gray900: "#121214",
   Puple500: "#8b5cf6",
   Red400: "#ff0707",
-  Red900: "#580b0b",
 };
