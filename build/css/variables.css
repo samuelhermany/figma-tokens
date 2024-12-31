@@ -3,6 +3,9 @@
  */
 
 :root {
+  --2: 8rem;
+  --4: 16rem;
+  --8: 32rem;
   --white: #ffffff;
   --gray-200: #c1c1c4;
   --gray-500: #50505c;
