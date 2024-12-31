@@ -53,7 +53,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
+      # Execute a ferramenta de transformação de tokens para gerar CSS
+      - name: Generate CSS from tokens
+        run: |
+          # Aqui, executamos o comando que gera o CSS usando o config.json
+          npx style-dictionary build --config config.json
+
+      - name: Build CSS
         run: npm run build
 
       # Garantindo que as referências do repositório estejam atualizadas
