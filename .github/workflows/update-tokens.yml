@@ -66,4 +66,9 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           commit-message: "style: Update design tokens"
-          title: ${{ github.event.client_payload.commitM
+          title: ${{ github.event.client_payload.commitMessage || 'Update design tokens' }}
+          body: "Design tokens have been updated via Figma and need to be reviewed."
+          branch: "update-tokens"  # Branch nova de origem dos dados
+          base: main               # Branch de destino
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
