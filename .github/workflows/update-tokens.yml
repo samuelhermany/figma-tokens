@@ -15,6 +15,11 @@ jobs:
         run: |
           git checkout -b "update-tokens-${{ github.sha }}"
 
+      # Empurra a nova branch para o repositório remoto
+      - name: Push the new branch
+        run: |
+          git push origin "update-tokens-${{ github.sha }}"
+
       # Cria o JSON com o nome correto: input/tokens.json
       - name: Create input JSON
         id: create-json
@@ -40,11 +45,16 @@ jobs:
       - name: Build
         run: npm run build
 
-      # Configura a identidade do Git (sem necessidade de push ou commit)
+      # Configura a identidade do Git
       - name: Configure Git user
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
+
+      # Garantindo que as referências do repositório estejam atualizadas
+      - name: Fetch all branches
+        run: |
+          git fetch --all
 
       # Criação da Pull Request (sem commit, apenas PR)
       - name: Create PR
@@ -53,6 +63,6 @@ jobs:
           commit-message: "style: Update design tokens"
           title: ${{ github.event.client_payload.commitMessage || 'Update design tokens' }}
           body: "Design tokens have been updated via Figma and need to be reviewed."
+          branch: "update-tokens-${{ github.sha }}"  # Refere-se à nova branch criada
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH_NAME: "main"
