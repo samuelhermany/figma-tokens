@@ -60,15 +60,3 @@ jobs:
       - name: Fetch all branches
         run: |
           git fetch --all
-
-      # Criação da Pull Request (sem commit, apenas PR)
-      - name: Create PR
-        uses: peter-evans/create-pull-request@v4
-        with:
-          commit-message: "style: Update design tokens"
-          title: ${{ github.event.client_payload.commitMessage || 'Update design tokens' }}
-          body: "Design tokens have been updated via Figma and need to be reviewed."
-          branch: "update-tokens" # Branch nova de origem dos dados
-          base: main # Branch de destino
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
