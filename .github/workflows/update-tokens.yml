@@ -13,18 +13,19 @@ jobs:
     steps:
       # Faz checkout do repositório diretamente para a branch update-tokens
       - name: Checkout repository
-        uses: actions/checkout@v3        
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       # Verifica e cria a branch 'update-tokens' se não existir
       - name: Ensure branch exists
         run: |
-          git fetch origin
-          if ! git show-ref --verify --quiet refs/remotes/origin/update-tokens; then
+          if git ls-remote --exit-code --heads origin update-tokens; then
+            git checkout update-tokens
+          else
             git checkout --orphan update-tokens
             git reset --hard
             git push origin update-tokens
-          else
-            git checkout update-tokens
           fi
 
       # Cria o JSON com o nome correto: input/tokens.json
