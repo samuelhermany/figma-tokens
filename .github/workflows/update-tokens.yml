@@ -13,10 +13,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      # Cria uma nova branch com base na branch principal (main)
-      - name: Create a new branch
+      # Faz checkout para a branch update-tokens (cria a branch caso não exista)
+      - name: Checkout or create update-tokens branch
         run: |
-          git checkout -b "update-tokens"
+          if git rev-parse --verify update-tokens >/dev/null 2>&1; then
+            git checkout update-tokens
+          else
+            git checkout -b update-tokens
+          fi
 
       # Cria o JSON com o nome correto: input/tokens.json
       - name: Create input JSON
@@ -43,7 +47,7 @@ jobs:
           git status
           git add input/tokens.json
           git commit -m "update: Refresh design tokens" || echo "No changes to commit"
-          git push origin "update-tokens"
+          git push origin update-tokens
 
       # Outras etapas (como instalação do Node.js, dependências, build, etc)
       - name: Install Node.js
