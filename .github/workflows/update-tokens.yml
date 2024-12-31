@@ -37,11 +37,18 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
 
-      # Comita o arquivo de tokens.json atualizado
+      # Puxa as últimas mudanças do repositório remoto
+      - name: Pull latest changes
+        run: |
+          git fetch origin
+          git pull origin update-tokens
+
+      # Comita o arquivo de tokens.json atualizado (somente se houver alterações)
       - name: Commit updated tokens.json
         run: |
+          git status
           git add input/tokens.json
-          git commit -m "update: Refresh design tokens"
+          git commit -m "update: Refresh design tokens" || echo "No changes to commit"
           git push origin "update-tokens"
 
       # Outras etapas (como instalação do Node.js, dependências, build, etc)
@@ -60,15 +67,3 @@ jobs:
       - name: Fetch all branches
         run: |
           git fetch --all
-
-      # Criação da Pull Request (sem commit, apenas PR)
-      - name: Create PR
-        uses: peter-evans/create-pull-request@v4
-        with:
-          commit-message: "style: Update design tokens"
-          title: ${{ github.event.client_payload.commitMessage || 'Update design tokens' }}
-          body: "Design tokens have been updated via Figma and need to be reviewed."
-          branch: "update-tokens" # Branch nova de origem dos dados
-          base: main # Branch de destino
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
