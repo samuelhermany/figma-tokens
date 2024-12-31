@@ -11,18 +11,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # Faz checkout do repositório diretamente para a branch update-tokens
+      # Faz checkout do repositório diretamente para a branch main
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      # Verifica e cria a branch 'update-tokens' se não existir
-      - name: Create branch update-tokens
+      # A branch main já existe, então fazemos checkout nela diretamente
+      - name: Checkout main branch
         run: |
-          git checkout --orphan update-tokens
-          git reset --hard
-          git push -u origin update-tokens
+          git checkout main
 
       # Cria o JSON com o nome correto: input/tokens.json
       - name: Create input JSON
@@ -43,13 +41,13 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
 
-      # Comita o arquivo de tokens.json atualizado (somente se houver alterações) diretamente na branch update-tokens
-      - name: Commit updated tokens.json to update-tokens
+      # Comita o arquivo de tokens.json atualizado (somente se houver alterações) diretamente na branch main
+      - name: Commit updated tokens.json to main
         run: |
           git status
           git add input/tokens.json
           git commit -m "update: Refresh design tokens" || echo "No changes to commit"
-          git push origin update-tokens
+          git push origin main
 
       # Instala o Node.js
       - name: Install Node.js
@@ -81,7 +79,7 @@ jobs:
         run: |
           git add build/css/variables.css build/js/variables.js
           git commit -m "build: Generated CSS and JS tokens" || echo "No changes to commit"
-          git push origin update-tokens
+          git push origin main
 
       # Garantindo que as referências do repositório estejam atualizadas
       - name: Fetch all branches
