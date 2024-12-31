@@ -11,11 +11,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      # Faz checkout para a branch update-tokens
+      # Faz checkout do repositório, sem fazer checkout para a main
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Faz checkout para a branch update-tokens (ou cria se não existir)
       - name: Checkout update-tokens branch
         run: |
+          # Verifica se a branch 'update-tokens' existe
           git fetch origin update-tokens || echo "Branch 'update-tokens' não existe, criando nova branch."
-          git checkout update-tokens || git checkout -b update-tokens
+
+          # Tenta fazer o checkout na branch 'update-tokens', se falhar, cria a branch a partir da 'main'
+          git checkout update-tokens || git checkout -b update-tokens origin/main
 
       # Cria o JSON com o nome correto: input/tokens.json
       - name: Create input JSON
