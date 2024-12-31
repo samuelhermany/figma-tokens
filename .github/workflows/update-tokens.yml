@@ -1,5 +1,9 @@
 name: Generate design tokens
 
+permissions:
+  contents: write  # Permite escrever no conteúdo (fazer push)
+  pull-requests: write  # Permite criar PRs
+  
 on:
   repository_dispatch:
     types: update-tokens
