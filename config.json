@@ -8,10 +8,6 @@
         {
           "destination": "variables.css",
           "format": "css/variables"
-        },
-        {
-          "destination": "simple.css",  
-          "format": "css/css"               
         }
       ]
     },
