@@ -11,7 +11,7 @@
         },
         {
           "destination": "simple.css",  
-          "format": "css"               
+          "format": "css/css"               
         }
       ]
     },
