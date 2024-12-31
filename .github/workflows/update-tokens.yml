@@ -11,12 +11,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
-      # Cria uma nova branch com base na branch principal (main)
-      - name: Create a new branch
+      # Faz checkout para a branch update-tokens
+      - name: Checkout update-tokens branch
         run: |
-          git checkout -b "update-tokens"
+          git fetch origin update-tokens || echo "Branch 'update-tokens' não existe, criando nova branch."
+          git checkout update-tokens || git checkout -b update-tokens
 
       # Cria o JSON com o nome correto: input/tokens.json
       - name: Create input JSON
@@ -43,7 +42,7 @@ jobs:
           git status
           git add input/tokens.json
           git commit -m "update: Refresh design tokens" || echo "No changes to commit"
-          git push origin "update-tokens"
+          git push origin update-tokens
 
       # Outras etapas (como instalação do Node.js, dependências, build, etc)
       - name: Install Node.js
