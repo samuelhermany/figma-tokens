@@ -44,26 +44,25 @@ jobs:
           git commit -m "update: Refresh design tokens" || echo "No changes to commit"
           git push origin main
 
-      # Outras etapas (como instalação do Node.js, dependências, build, etc)
+      # Instala o Node.js
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 22
 
+      # Instala as dependências (usando npm ci)
       - name: Install dependencies
         run: npm ci
 
-      # Executa o comando npm run build para gerar os tokens CSS e JS
+      # Executa diretamente o comando de build do style-dictionary
       - name: Generate CSS from tokens
-        run: npm run build
+        run: |
+          npx style-dictionary build  # Executa diretamente o comando para garantir que o build seja feito
 
-      # Garantir que o CSS foi gerado no diretório correto
+      # Verifica se o CSS foi gerado corretamente
       - name: Verify CSS output
         run: |
           ls build/css/  # Verifica se o arquivo 'variables.css' foi gerado corretamente
-
-      - name: Build CSS
-        run: npm run build
 
       # Garantindo que as referências do repositório estejam atualizadas
       - name: Fetch all branches
