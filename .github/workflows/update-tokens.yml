@@ -18,15 +18,11 @@ jobs:
           fetch-depth: 0
 
       # Verifica e cria a branch 'update-tokens' se não existir
-      - name: Ensure branch exists
+      - name: Create branch update-tokens
         run: |
-          if git ls-remote --exit-code --heads origin update-tokens; then
-            git checkout update-tokens
-          else
-            git checkout --orphan update-tokens
-            git reset --hard
-            git push origin update-tokens
-          fi
+          git checkout --orphan update-tokens
+          git reset --hard
+          git push -u origin update-tokens
 
       # Cria o JSON com o nome correto: input/tokens.json
       - name: Create input JSON
