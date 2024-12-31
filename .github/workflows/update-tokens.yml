@@ -85,7 +85,14 @@ jobs:
       - name: Verify CSS output
         run: |
           ls build/css/  # Verifica se o arquivo 'variables.css' foi gerado corretamente
-
+      
+      # Commit e push dos arquivos gerados
+      - name: Commit generated files to GitHub
+        run: |
+          git add build/css/variables.css build/js/variables.js
+          git commit -m "build: Generated CSS and JS tokens"
+          git push origin main
+          
       # Garantindo que as referências do repositório estejam atualizadas
       - name: Fetch all branches
         run: |
