@@ -20,7 +20,8 @@ jobs:
       # Verifica e cria a branch 'update-tokens' se não existir
       - name: Ensure branch exists
         run: |
-          if ! git ls-remote --heads origin update-tokens; then
+          git fetch origin
+          if ! git show-ref --verify --quiet refs/remotes/origin/update-tokens; then
             git checkout -b update-tokens
             git push origin update-tokens
           else
@@ -63,7 +64,7 @@ jobs:
       # Instala as dependências (usando npm ci)
       - name: Install dependencies
         run: npm ci
-        
+
       # Verificar se o Style Dictionary está instalado
       - name: Verify Style Dictionary installation
         run: |
@@ -77,15 +78,15 @@ jobs:
       # Executa diretamente o comando de build do style-dictionary
       - name: Generate CSS from tokens
         run: |
-          npx style-dictionary build  # Executa diretamente o comando para garantir que o build seja feito
-      
+          npx style-dictionary build # Executa diretamente o comando para garantir que o build seja feito
+
       # Commit e push dos arquivos gerados
       - name: Commit generated files to GitHub
         run: |
           git add build/css/variables.css build/js/variables.js
-          git commit -m "build: Generated CSS and JS tokens"
+          git commit -m "build: Generated CSS and JS tokens" || echo "No changes to commit"
           git push origin update-tokens
-          
+
       # Garantindo que as referências do repositório estejam atualizadas
       - name: Fetch all branches
         run: |
