@@ -15,12 +15,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
-
-      # A branch main já existe, então fazemos checkout nela diretamente
-      - name: Checkout main branch
-        run: |
-          git checkout main
+          ref: main  # Garante que estamos na branch 'main'
 
       # Cria o JSON com o nome correto: input/tokens.json
       - name: Create input JSON
@@ -58,7 +53,7 @@ jobs:
       # Instala as dependências (usando npm ci)
       - name: Install dependencies
         run: npm ci
-
+        
       # Verificar se o Style Dictionary está instalado
       - name: Verify Style Dictionary installation
         run: |
@@ -69,18 +64,35 @@ jobs:
             echo "Style Dictionary is installed!"
           fi
 
+      # Exibe a estrutura de diretórios antes do build para diagnóstico
+      - name: Display directory structure before build
+        run: |
+          echo "Diretório antes do build:"
+          ls -R
+
       # Executa diretamente o comando de build do style-dictionary
       - name: Generate CSS from tokens
         run: |
-          npx style-dictionary build # Executa diretamente o comando para garantir que o build seja feito
+          npx style-dictionary build  # Executa diretamente o comando para garantir que o build seja feito
 
+      # Exibe a estrutura de diretórios após o build para verificar o arquivo gerado
+      - name: Display directory structure after build
+        run: |
+          echo "Diretório após o build:"
+          ls -R
+
+      # Verifica se o CSS foi gerado corretamente
+      - name: Verify CSS output
+        run: |
+          ls build/css/  # Verifica se o arquivo 'variables.css' foi gerado corretamente
+      
       # Commit e push dos arquivos gerados
       - name: Commit generated files to GitHub
         run: |
           git add build/css/variables.css build/js/variables.js
-          git commit -m "build: Generated CSS and JS tokens" || echo "No changes to commit"
+          git commit -m "build: Generated CSS and JS tokens"
           git push origin main
-
+          
       # Garantindo que as referências do repositório estejam atualizadas
       - name: Fetch all branches
         run: |
