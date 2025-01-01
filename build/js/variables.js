@@ -12,5 +12,6 @@ module.exports = {
   ColorGray800: "#1c1c1f",
   ColorGray900: "#121214",
   ColorPuple500: "#8b5cf6",
+  ColorRed200: "#e86a6a",
   ColorRed400: "#ff0707",
 };
