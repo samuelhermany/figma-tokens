@@ -1,3 +1,4 @@
+# Obs: A branch já deve existir no repositório
 name: Generate design tokens
 
 permissions:
@@ -10,12 +11,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      TARGET_BRANCH: main     # Define a variável de ambiente com o nome da branch
+
     steps:
       # Faz checkout do repositório diretamente para a branch main
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          ref: main  # Garante que estamos na branch 'main'
+          ref: ${{ env.TARGET_BRANCH }}  # Garante que estamos na branch definida
 
       # Cria o JSON com o nome correto: input/tokens.json
       - name: Create input JSON
@@ -42,7 +46,7 @@ jobs:
           git status
           git add input/tokens.json
           git commit -m "update: Refresh design tokens" || echo "No changes to commit"
-          git push origin main
+          git push origin ${{ env.TARGET_BRANCH }}
 
       # Instala o Node.js
       - name: Install Node.js
@@ -69,7 +73,7 @@ jobs:
         run: |
           git add build/css/variables.css build/js/variables.js
           git commit -m "build: Generated CSS and JS tokens"
-          git push origin main
+          git push origin ${{ env.TARGET_BRANCH }}
           
       # Garantindo que as referências do repositório estejam atualizadas
       - name: Fetch all branches
